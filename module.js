@@ -102,17 +102,60 @@ module.exports = _Configurator;
 
 
 }).call(this,typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./settings":3,"./time_configs_form":5,"./time_styles_form":6}],2:[function(require,module,exports){
+},{"./settings":6,"./time_configs_form":8,"./time_styles_form":9}],2:[function(require,module,exports){
+(function (global){
 var Widget = require('./widget'),
-    Shortcut = require('./shortcut');
+    Shortcut = require('./shortcut'),
+    locales = require('./locales');
 
+global.I18n.registryDict(locales);
 OS.installModule('Clock', {
   Widget: Widget,
   Shortcut: Shortcut
 });
 
 
-},{"./shortcut":4,"./widget":7}],3:[function(require,module,exports){
+}).call(this,typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
+},{"./locales":4,"./shortcut":7,"./widget":10}],3:[function(require,module,exports){
+var en = {
+  'clock.time_configs.nav_text': 'Time Configs',
+  'clock.styles.nav_text': 'Styles',
+
+  'clock.format.label': 'format:',
+  'clock.updated_interval.label': 'updated interval:',
+  'clock.location.label': 'location:',
+  'clock.timezone.label': 'timezone:',
+  'clock.margin_top.label': 'margin top:',
+  'clock.font_size.label': 'font size:'
+};
+
+module.exports = en;
+
+
+},{}],4:[function(require,module,exports){
+module.exports = {
+  en: require('./en'),
+  ru: require('./ru')
+};
+
+
+},{"./en":3,"./ru":5}],5:[function(require,module,exports){
+var ru = {
+  'clock.time_configs.nav_text': 'Конфиг времени',
+  'clock.styles.nav_text': 'Стили',
+
+  'clock.format.label': 'формат:',
+  'clock.updated_interval.label': 'интервал обновления:',
+  'clock.location.label': 'локация:',
+  'clock.timezone.label': 'часовой пояс:',
+  'clock.margin_top.label': 'отступ сверху:',
+  'clock.font_size.label': 'размер шрифта:'
+};
+
+module.exports = ru;
+
+
+},{}],6:[function(require,module,exports){
 (function (global){
 var settings = {
   DEFAULT_FORMAT: 'HH:mm',
@@ -140,7 +183,7 @@ module.exports = settings;
 
 
 }).call(this,typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],4:[function(require,module,exports){
+},{}],7:[function(require,module,exports){
 var Link = OS.Link;
 
 var Shortcut = React.createClass({displayName: "Shortcut",
@@ -159,7 +202,7 @@ var Shortcut = React.createClass({displayName: "Shortcut",
 module.exports = Shortcut;
 
 
-},{}],5:[function(require,module,exports){
+},{}],8:[function(require,module,exports){
 (function (global){
 var HForm = global.OS.HForm,
     Input = global.OS.Input;
@@ -232,7 +275,7 @@ module.exports = TimeConfigsForm;
 
 
 }).call(this,typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],6:[function(require,module,exports){
+},{}],9:[function(require,module,exports){
 (function (global){
 var HForm = global.OS.HForm,
     Input = global.OS.Input;
@@ -284,7 +327,7 @@ module.exports = TimeStylesForm;
 
 
 }).call(this,typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],7:[function(require,module,exports){
+},{}],10:[function(require,module,exports){
 (function (global){
 var Widget = global.OS.Widget,
     Mixins = global.OS.Mixins,
@@ -426,4 +469,4 @@ module.exports = _Widget;
 
 
 }).call(this,typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./configurator":1,"./settings":3}]},{},[2])
+},{"./configurator":1,"./settings":6}]},{},[2])
