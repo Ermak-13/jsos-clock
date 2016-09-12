@@ -1,7 +1,7 @@
 var Widget = require('./widget'),
     Shortcut = require('./shortcut');
 
-OS.installModule('TODO', {
+OS.installModule('Clock', {
   Widget: Widget,
   Shortcut: Shortcut
 });

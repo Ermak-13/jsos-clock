@@ -1,28 +1,87 @@
-var Mixins = OS.Mixins,
-    Widget = OS.Widget,
-    Configurator = OS.Configurator;
+var Widget = global.OS.Widget,
+    Mixins = global.OS.Mixins,
+    AppDispatcher= global.OS.AppDispatcher,
 
-var settings = require('./settings');
+    settings = require('./settings'),
+    Configurator = require('./configurator');
 
 var _Widget = React.createClass({
   mixins: [Mixins.WidgetHelper],
 
   getInitialState: function () {
     return {
+      _moment: moment(),
+      format: settings.DEFAULT_FORMAT,
+      updatedInterval: settings.DEFAULT_UPDATED_INTERVAL,
+
+      location: moment.tz.guess(),
+      timezone: moment.tz.guess(),
+
       size: settings.DEFAULT_SIZE,
-      position: settings.DEFAULT_POSITION
+      position: settings.DEFAULT_POSITION,
+      widgetStyles: settings.DEFAULT_WIDGET_STYLES,
+      timeStyles: settings.DEFAULT_TIME_STYLES,
+      locationStyles: settings.DEFAULT_LOCATION_STYLES
     };
   },
 
   _getSettings: function () {
     return {
+      format: this.state.format,
+      updatedInterval: this.state.updatedInterval,
+      location: this.state.location,
+      timezone: this.state.timezone,
+
       size: _.clone(this.state.size),
-      position: _.clone(this.state.position)
+      position: _.clone(this.state.position),
+      timeStyles: _.clone(this.state.timeStyles),
+      locationStyles: _.clone(this.state.locationStyles)
     };
+  },
+
+  getTime: function () {
+    return this.state._moment
+           .tz(this.state.timezone)
+           .format(this.state.format);
+  },
+
+  refreshInterval: function () {
+    this.clearInterval();
+    this.setInterval();
+  },
+
+  setInterval: function () {
+    var intervalId = setInterval(
+      this.updateMoment,
+      this.state.updatedInterval
+    );
+    this.setState({ intervalId: intervalId });
+  },
+
+  clearInterval: function () {
+    clearInterval(this.state.intervalId);
+  },
+
+  updateMoment: function () {
+    this.setState({
+      _moment: moment()
+    });
   },
 
   componentWillMount: function () {
     this.init();
+  },
+
+  _load: function (onLoad) {
+    this.loadSettings(onLoad);
+  },
+
+  componentDidMount: function () {
+    this.setInterval();
+  },
+
+  componentWillUnmount: function () {
+    this.clearInterval();
   },
 
   render: function () {
@@ -35,11 +94,44 @@ var _Widget = React.createClass({
         />
 
         <Widget.Body>
-          <p className="lead">TODO</p>
+          <div style={ this.state.timeStyles }>
+            { this.getTime() }
+          </div>
+
+          { this.getLocationHTML() }
         </Widget.Body>
+
       </Widget.Widget>
     );
   },
+
+  _createConfigurator: function () {
+    return (
+      <Configurator
+        name={ this.getName() }
+        settings={ this.getSettings() }
+        onClose={ this.handleCloseConfigurator }
+        onSubmit={ this.handleConfigure }
+      />
+    );
+  },
+
+  _handleConfigure: function (settings) {
+    this.setSettings(settings, function () {
+      this.refreshInterval();
+      this.saveSettings();
+    }.bind(this));
+  },
+
+  getLocationHTML: function () {
+    if (this.state.location) {
+      return (
+        <div style={ this.state.locationStyles }>
+          { this.state.location }
+        </div>
+      );
+    }
+  }
 });
 
 module.exports = _Widget;

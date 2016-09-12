@@ -1,18 +1,11 @@
-# JSOS Module
+# JSOS Clock
 
-**This repository was creating for helping develop new "JSOS module".**
+JSOS Clock is module [JSOS](https://github.com/Ermak-13/jsos) project
+and it is simple clock.
 
-JSOS module is brick of [JSOS](https://github.com/Ermak-13/jsos).
-And it like as application of normal operation system.
-
-## How is developing new module?
-* Fork this repository
-* Rename repository
-* Edit README.md
-* `npm install`
-* `gulp` and `gulp server`
-* Implementing ... (directory "/module")
-* Please, add project link to [JSOS Store](https://github.com/Ermak-13/jsos-store) modules.txt
+## Features:
+* Customize format time
+* Support timezone
 
 ## Gulp Commands
 * `gulp default` - gulp dev
